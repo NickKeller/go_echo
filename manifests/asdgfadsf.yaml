@@ -1,16 +1,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: <INGRESS_NAME>
+  name: go-echo-ingress
 spec:
   rules:
-  - host: <HOST_URL>
+  - host: example.com
     http:
       paths:
-      - path: <URL_PATH>
-        pathType: <PATH_TYPE>
+      - path: /
+        pathType: Prefix
         backend:
           service:
-            name: <SERVICE_NAME>
+            name: go-echo
             port:
-              number: <SERVICE_PORT>
+              number: 80
