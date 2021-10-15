@@ -78,4 +78,4 @@ jobs:
             ${{ secrets.SECRET_NAME }}
           namespace: ${{ secrets.NAMESPACE }}
       - uses: NickKeller/NginxIngressController@main
-      - uses: imiller31/install-osm-action@main
+      - uses: NickKeller/install-osm-action@main
