@@ -43,10 +43,8 @@ jobs:
           login-server: ${{ secrets.CLUSTER_NAME }}.azurecr.io
           username: ${{ secrets.ARM_CLIENT_ID }}
           password: ${{ secrets.ARM_CLIENT_SECRET }}
-      - run: >
-          docker build . -t ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{
-          secrets.APP_NAME }}:${{ github.sha }}
-
+      - run: |
+          docker build . -t ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
           docker push ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
         name: Docker push
       - uses: azure/aks-set-context@v1
@@ -54,9 +52,8 @@ jobs:
           creds: ${{ secrets.AZURE_CREDS }}
           cluster-name: ${{ secrets.CLUSTER_NAME }}
           resource-group: ${{ secrets.RESOURCE_GROUP_NAME }}
-      - run: >
-          kubectl create namespace ${{ secrets.NAMESPACE }} --dry-run -o json |
-          kubectl apply -f -
+      - run: |
+          kubectl create namespace ${{ secrets.NAMESPACE }} --dry-run -o json | kubectl apply -f -
       - uses: azure/k8s-create-secret@v1
         with:
           container-registry-url: ${{ secrets.CLUSTER_NAME }}.azurecr.io
@@ -71,11 +68,9 @@ jobs:
             manifests/deployment.yaml
             manifests/service.yaml
             manifests/ingress.yaml
-          images: >
-            ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{
-            github.sha }}
+          images: |
+            ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
           imagepullsecrets: |
             ${{ secrets.SECRET_NAME }}
           namespace: ${{ secrets.NAMESPACE }}
       - uses: NickKeller/NginxIngressController@main
-      - uses: NickKeller/install-osm-action@main
